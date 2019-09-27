@@ -1,0 +1,195 @@
+{% extends "partials/_base.html" %}
+
+{% load static %}
+
+{% block title %}
+Sensor Detail
+{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link href="{% static "template_resource/lib/morris.js/css/morris.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static "template_resource/lib/raphael/js/raphael.min.js" %}"></script>
+    <script src="{% static "template_resource/lib/morris.js/js/morris.js" %}"></script>
+    <script>
+        $(function(){
+            'use strict';
+            
+            new Morris.Bar({
+                element: 'oxygen',
+                data: [
+                { y: 'Oxygen', a: {{ data.oxygen }} },               
+                ],
+                xkey: 'y',
+                ykeys: ['a'],
+                ymax: 'auto 100',
+                labels: ['Oxygen'],
+                barColors: ['#5058AB'],
+                gridTextSize: 11,
+                hideHover: 'auto',
+                resize: true
+            });            
+
+            new Morris.Bar({
+                element: 'temperature',
+                data: [
+                { y: 'Temp.', a: {{ data.temperature }}},               
+                ],
+                xkey: 'y',
+                ykeys: ['a'],
+                ymax: 'auto 60',
+                labels: ['Temperature'],
+                {% if data.temperature > 32 and data.temperature < 40 %}
+                    barColors: ['#ea9204'],
+                {% elif data.temperature > 40 %}
+                    barColors: ['#DC3545'],
+                {% else %}
+                    barColors: ['#4adb36'],
+                {% endif %}                
+                gridTextSize: 11,
+                hideHover: 'auto',
+                resize: true
+            });
+
+            new Morris.Bar({
+                element: 'ph',
+                data: [
+                { y: 'pH', a: {{ data.ph }} },               
+                ],
+                xkey: 'y',
+                ykeys: ['a'],
+                ymax: 'auto 12',
+                labels: ['pH Water'],
+                {% if data.ph > sensor_data.ideal_ph_max %}
+                    barColors: ['#DC3545'],
+                {% else %}
+                    barColors: ['#5058AB'],                
+                {% endif %}
+                gridTextSize: 11,
+                hideHover: 'auto',
+                resize: true
+            });
+
+            new Morris.Bar({
+                element: 'tds',
+                data: [
+                { y: 'TDS', a: {{ data.tds }} },               
+                ],
+                xkey: 'y',
+                ykeys: ['a'],
+                ymax: 'auto 7000',
+                labels: ['TDS Water'],
+                barColors: ['#5058AB'],
+                gridTextSize: 8,
+                hideHover: 'auto',
+                resize: true
+            });
+
+            new Morris.Bar({
+                element: 'turbidity',
+                data: [
+                    { y: 'Turbidity', a: {{ data.turbidity }} },               
+                ],
+                xkey: 'y',
+                ykeys: ['a'],
+                ymax: 'auto 100',
+                labels: ['Turbidity'],
+                barColors: ['#5058AB'],
+                gridTextSize: 11,
+                hideHover: 'auto',
+                resize: true
+            });
+        });              
+    </script>
+
+{% endblock %}
+
+{% block content %}
+<div class="slim-mainpanel">
+    <div class="container">
+        <div class="slim-pageheader">
+            <ol class="breadcrumb slim-breadcrumb">
+                <li class="breadcrumb-item"><a href="/application">Pond IoT</a></li>
+                <li class="breadcrumb-item"><a href="/application/device/{{ data.id }}/configure">Device {{ data.name }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Sensor Detail</li>
+            </ol>
+            <h6 class="slim-pagetitle">Sensor Detail</h6>
+        </div><!-- slim-pageheader -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card card-profile">
+                    <div class="card-header">
+                        <strong>Ideal Condition</strong>
+                    </div>
+                    <div class="card-body">                            
+                        <table class="table table-borderless table-striped">                                
+                            <tbody>
+                                <tr>
+                                    <td>Oxygen</td>
+                                    <td></td>
+                                    <td>{{ sensor_data.ideal_oxygen_min }}% ~ {{ sensor_data.ideal_oxygen_max }}%</td>
+                                </tr>
+                                <tr>
+                                    <td>Temp.</td>
+                                    <td></td>
+                                    <td>{{ sensor_data.ideal_temperature_min }}°C ~ {{ sensor_data.ideal_temperature_max }}°C</td>
+                                </tr>
+                                <tr>
+                                    <td>pH</td>
+                                    <td></td>
+                                    <td>{{ sensor_data.ideal_ph_min }} ~ {{ sensor_data.ideal_ph_max }}</td>
+                                </tr>
+                                <tr>
+                                    <td>TDS</td>
+                                    <td></td>
+                                    <td>{{ sensor_data.ideal_tds_min }} ~ {{ sensor_data.ideal_tds_max }}  mg/L</td>
+                                </tr>
+                                <tr>
+                                    <td>turbidity</td>
+                                    <td></td>
+                                    <td>{{ sensor_data.ideal_turbidity_min }} ~ {{ sensor_data.ideal_turbidity_max }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div><!-- card-body -->                    
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="section-wrapper">
+                    <label class="section-title">Device - {{ data.name }}</label>
+                    <p class="mg-b-20 mg-sm-b-40">sensors data {{ data.device_id }}, last updated at {{ data.created_at }}.</p>
+        
+                    <div class="row">
+                        <div class="col-xl-1"></div>
+                        <div class="col-xl-2">
+                            <label for="oxygen">Oxygen</label>
+                            <div id="oxygen" class="ht-200 ht-sm-300 bd"></div>
+                        </div>
+                        <div class="col-xl-2">
+                            <label for="temperature">Temperature</label>
+                            <div id="temperature" class="ht-200 ht-sm-300 bd"></div>
+                        </div>
+                        <div class="col-xl-2">
+                            <label for="ph">Water pH</label>
+                            <div id="ph" class="ht-200 ht-sm-300 bd"></div>
+                        </div>                        
+                        <div class="col-xl-2">
+                            <label for="turbidity">turbidity</label>
+                            <div id="turbidity" class="ht-200 ht-sm-300 bd"></div>
+                        </div>
+                        <div class="col-xl-2">
+                            <label for="tds">Water TDS</label>
+                            <div id="tds" class="ht-200 ht-sm-300 bd"></div>
+                        </div>                
+                        <div class="col-xl-1"></div>
+                    </div><!-- row -->            
+                </div><!-- section-wrapper -->
+            </div>
+        </div>
+    </div><!-- container -->
+</div><!-- slim-mainpanel -->
+{% endblock %}

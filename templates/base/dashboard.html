@@ -1,0 +1,460 @@
+{% extends "partials/_base.html" %}
+
+{% load static %}
+{% load mytags %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block css %}
+    <style>
+        #wrap2{
+            display:none;
+        }
+        #wrap3{
+            display:none;
+        }
+    </style>
+    <link href="{% static "template_resource/lib/datatables/css/jquery.dataTables.css" %}" rel="stylesheet">
+    <link href="{% static "template_resource/lib/select2/css/select2.min.css" %}" rel="stylesheet">
+    {{ block.super }}
+{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}    
+    <script src="{% static "template_resource/lib/datatables/js/jquery.dataTables.js" %}"></script>
+    <script src="{% static "template_resource/lib/datatables-responsive/js/dataTables.responsive.js" %}"></script>
+    <script src="{% static "template_resource/lib/select2/js/select2.min.js" %}"></script>
+    <script>
+        $(function(){
+            'use strict';
+    
+            $('#datatable1').DataTable({
+            responsive: true,
+            searching: false,            
+            paging: false,
+            language: {
+                searchPlaceholder: 'Search...',
+                Search: '',
+                lengthMenu: '_MENU_ items/page',
+            }
+            });
+    
+            $('#datatable2').DataTable({
+                bLengthChange: false,
+                searching: false,
+                responsive: true
+            });
+    
+            // Select2
+            $('.dataTables_length select').select2({ minimumResultsForSearch: Infinity });
+    
+        });
+        </script>
+        <script>
+            $(document).ready(function() {
+                $('input[type="radio"]').click(function() {
+                    if($(this).attr('class') == 'ch1') {
+                        $('#wrap1').show();           
+                        $('#wrap2').hide();
+                        $('#wrap3').hide();
+                    }
+                    else if($(this).attr('class') == 'ch2'){
+                        $('#wrap1').hide();           
+                        $('#wrap2').show();
+                        $('#wrap3').hide();  
+                    }
+                    else {
+                        $('#wrap1').hide();           
+                        $('#wrap2').hide();
+                        $('#wrap3').show();
+                    }
+                });
+            });
+        </script>
+{% endblock %}
+
+{% block content %}
+    <div class="slim-mainpanel">
+        <div class="container">
+            <div class="slim-pageheader">
+                <ol class="breadcrumb slim-breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Pond IoT</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                </ol>
+                <h6 class="slim-pagetitle">Dashboard</h6>
+            </div><!-- slim-pageheader -->
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>                                                
+                {% endfor %}
+            {% endif %}
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-profile">
+                                <div class="card-header">
+                                    <strong>Filter Data</strong>
+                                </div>
+                                <div class="card-body">                            
+                                    <table class="table table-borderless table-striped">                                
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <input type="radio" name="dashboardconfig" class="ch1" checked>
+                                                </td>
+                                                <td></td>
+                                                <td style="text-align:left">Display All Data</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input type="radio" name="dashboardconfig" class="ch2">
+                                                </td>
+                                                <td></td>
+                                                <td style="text-align:left">Display Data with Normal Conditions</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input type="radio" name="dashboardconfig" class="ch3">
+                                                </td>
+                                                <td></td>
+                                                <td style="text-align:left">Display Data with Abnormal Conditions</td>
+                                            </tr>                                    
+                                        </tbody>
+                                    </table>
+                                </div><!-- card-body -->                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">&nbsp;</div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-profile">
+                            <div class="card-header">
+                                <strong>Ideal Condition</strong>
+                            </div>
+                            <div class="card-body">                            
+                                <table class="table table-borderless table-striped">                                
+                                    <tbody>
+                                        <tr>
+                                            <td>Oxygen</td>
+                                            <td></td>
+                                            <td>{{ sensor_data.ideal_oxygen_min }}% ~ {{ sensor_data.ideal_oxygen_max }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Temp.</td>
+                                            <td></td>
+                                            <td>{{ sensor_data.ideal_temperature_min }}°C ~ {{ sensor_data.ideal_temperature_max }}°C</td>
+                                        </tr>
+                                        <tr>
+                                            <td>pH</td>
+                                            <td></td>
+                                            <td>{{ sensor_data.ideal_ph_min }} ~ {{ sensor_data.ideal_ph_max }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>TDS</td>
+                                            <td></td>
+                                            <td>{{ sensor_data.ideal_tds_min }} ~ {{ sensor_data.ideal_tds_max }}  mg/L</td>
+                                        </tr>
+                                        <tr>
+                                            <td>turbidity</td>
+                                            <td></td>
+                                            <td>{{ sensor_data.ideal_turbidity_min }} ~ {{ sensor_data.ideal_turbidity_max }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div><!-- card-body -->
+                            {% comment %} <div class="card-footer">                          
+                                <div>
+                                    <a href="/application/sensor/configuration" style="text-align: center"><i class="fa fa-gear"></i> &nbsp; Change Condition</a>
+                                </div>
+                            </div><!-- card-footer --> {% endcomment %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-header">
+                        <strong>Device Information</strong>
+                    </div>
+                    <div class="section-wrapper">                      
+                        
+                        <div class="table-wrapper" id="wrap1">
+                            <table id="datatable1" class="table display responsive nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Oxygen</th>
+                                        <th>Temperature</th>
+                                        <th>pH</th>
+                                        <th>TDS</th>
+                                        <th>turbidity</th>
+                                        {% if request.user|has_group:"User" %}
+                                            <th>Graph</th>
+                                        {% else %}
+                                            <th>Option</th>
+                                            <th>Graph</th>
+                                        {% endif %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for data in device_data %}
+                                        <tr>                                            
+                                            <td style="padding-bottom:5px;">{{ data.device_id }}</td>
+
+                                            {% if data.oxygen > sensor_data.ideal_oxygen_max or data.oxygen < sensor_data.ideal_oxygen_min %}
+                                                <td style="color:red; padding-bottom:5px; font-weight:bold">{{ data.oxygen }}%</td>
+                                            {% else %}
+                                                <td style="padding-bottom:5px;">{{ data.oxygen }}%</td>
+                                            {% endif %}
+
+                                            {% if data.temperature > sensor_data.ideal_temperature_max or data.temperature < sensor_data.ideal_temperature_min %}
+                                                <td style="color:red; padding-bottom:5px; font-weight:bold">{{ data.temperature }} °C</td>
+                                            {% else %}
+                                                <td style="padding-bottom:5px;">{{ data.temperature }} °C</td>
+                                            {% endif %}
+
+                                            {% if data.ph > sensor_data.ideal_ph_max or data.ph < sensor_data.ideal_ph_min %}
+                                                <td style="color:red; padding-bottom:5px; font-weight:bold">{{ data.ph }}</td>
+                                            {% else %}
+                                                <td style="padding-bottom:5px;">{{ data.ph }}</td>
+                                            {% endif %}
+
+                                            {% if data.tds > sensor_data.ideal_tds_max or data.tds < sensor_data.ideal_tds_min %}
+                                                <td style="color:red; padding-bottom:5px; font-weight:bold">{{ data.tds }} mg/L</td>
+                                            {% else %}
+                                                <td style="padding-bottom:5px;">{{ data.tds }} mg/L</td>
+                                            {% endif %}
+
+                                            {% if data.turbidity > sensor_data.ideal_turbidity_max or data.turbidity < sensor_data.ideal_turbidity_min %}
+                                                <td style="color:red; padding-bottom:5px; font-weight:bold">{{ data.turbidity }}</td>
+                                            {% else %}
+                                                <td style="padding-bottom:5px;">{{ data.turbidity }}</td>
+                                            {% endif %}
+
+                                            
+                                            {% if request.user|has_group:"User" %}
+                                                <td style="padding-bottom:5px;">
+                                                    <a href="/application/sensor/{{ data.id }}/detail" class="btn btn-default btn-sm" title="Detail">   
+                                                        <i class="fa fa-bar-chart"></i>
+                                                    </a>
+                                                </td>
+                                            {% else %}
+                                                <td style="padding-bottom:5px;">
+                                                    <a href="/application/device/{{ data.id }}/configure" class="btn btn-default btn-sm" title="Configure"> 
+                                                        <i class="fa fa-wrench"></i>
+                                                    </a>
+                                                </td>
+                                                <td style="padding-bottom:5px;">                                            
+                                                    <a href="/application/sensor/{{ data.id }}/detail" class="btn btn-default btn-sm" title="Detail">   
+                                                        <i class="fa fa-bar-chart"></i>
+                                                    </a>
+                                                </td>
+                                            {% endif %}                                            
+                                            <tr style="height:10px">
+                                                {% if request.user|has_group:"User" %}
+                                                    <td onhover colspan="7" style="padding:0px; border-top:0px; margin:0px;">
+                                                        <p style="margin:5px;" align="center">{{ data.created_at }}</p>
+                                                    </td>
+                                                {% else %}
+                                                    <td colspan="8" style="padding:0px; border-top:0px; margin:0px;">
+                                                        <p style="margin:5px;" align="center">{{ data.created_at }}</p>
+                                                    </td>
+                                                {% endif %}
+                                            </tr>
+                                        </tr>
+                                    {% endfor %}                                    
+                                </tbody>
+                            </table>
+                        </div><!-- table-wrapper -->
+
+                        <div class="table-wrapper" id="wrap2">
+                            <table id="datatable1" class="table display responsive nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Oxygen</th>
+                                        <th>Temperature</th>
+                                        <th>pH</th>
+                                        <th>TDS</th>
+                                        <th>turbidity</th>
+                                        {% if request.user|has_group:"User" %}
+                                            <th>Graph</th>
+                                        {% else %}
+                                            <th>Option</th>
+                                            <th>Graph</th>
+                                        {% endif %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in device_data %}
+                                        <tr rowspan = '2'>                                            
+                                            <td>{{ data.device_id }}</td>
+
+                                            {% if data.oxygen > sensor_data.ideal_oxygen_max or data.oxygen < sensor_data.ideal_oxygen_min %}
+                                                <td style="color:red; font-weight:bold"></td>
+                                            {% else %}
+                                                <td>{{ data.oxygen }}%</td>
+                                            {% endif %}
+
+                                            {% if data.temperature > sensor_data.ideal_temperature_max or data.temperature < sensor_data.ideal_temperature_min %}
+                                                <td style="color:red; font-weight:bold"></td>
+                                            {% else %}
+                                                <td>{{ data.temperature }} °C</td>
+                                            {% endif %}
+
+                                            {% if data.ph > sensor_data.ideal_ph_max or data.ph < sensor_data.ideal_ph_min %}
+                                                <td style="color:red; font-weight:bold"></td>
+                                            {% else %}
+                                                <td>{{ data.ph }}</td>
+                                            {% endif %}
+
+                                            {% if data.tds > sensor_data.ideal_tds_max or data.tds < sensor_data.ideal_tds_min %}
+                                                <td style="color:red; font-weight:bold"></td>
+                                            {% else %}
+                                                <td>{{ data.tds }} mg/L</td>
+                                            {% endif %}
+
+                                            {% if data.turbidity > sensor_data.ideal_turbidity_max or data.turbidity < sensor_data.ideal_turbidity_min %}
+                                                <td style="color:red; font-weight:bold"></td>
+                                            {% else %}
+                                                <td>{{ data.turbidity }}</td>
+                                            {% endif %}
+
+                                            {% if request.user|has_group:"User" %}
+                                                <td>
+                                                    <a href="/application/sensor/{{ data.id }}/detail" class="btn btn-default btn-sm" title="Detail">   
+                                                        <i class="fa fa-bar-chart"></i>
+                                                    </a>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <a href="/application/device/{{ data.id }}/configure" class="btn btn-default btn-sm" title="Configure"> 
+                                                        <i class="fa fa-wrench"></i>
+                                                    </a>
+                                                </td>
+                                                <td>                                            
+                                                    <a href="/application/sensor/{{ data.id }}/detail" class="btn btn-default btn-sm" title="Detail">   
+                                                        <i class="fa fa-bar-chart"></i>
+                                                    </a>
+                                                </td>
+                                            {% endif %} 
+                                            <tr style="height:10px">
+                                                {% if request.user|has_group:"User" %}
+                                                    <td onhover colspan="7" style="padding:0px; border-top:0px; margin:0px;">
+                                                        <p style="margin:5px;" align="center">{{ data.created_at }}</p>
+                                                    </td>
+                                                {% else %}
+                                                    <td colspan="8" style="padding:0px; border-top:0px; margin:0px;">
+                                                        <p style="margin:5px;" align="center">{{ data.created_at }}</p>
+                                                    </td>
+                                                {% endif %}
+                                            </tr> 
+                                        </tr>                                        
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div><!-- table-wrapper -->
+
+                        <div class="table-wrapper" id="wrap3">
+                            <table id="datatable1" class="table display responsive nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Oxygen</th>
+                                        <th>Temperature</th>
+                                        <th>pH</th>
+                                        <th>TDS</th>
+                                        <th>turbidity</th>
+                                        {% if request.user|has_group:"User" %}
+                                            <th>Graph</th>
+                                        {% else %}
+                                            <th>Option</th>
+                                            <th>Graph</th>
+                                        {% endif %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in device_data %}
+                                        <tr rowspan = '2'>                                            
+                                            <td>{{ data.device_id }}</td>
+
+                                            {% if data.oxygen > sensor_data.ideal_oxygen_max or data.oxygen < sensor_data.ideal_oxygen_min %}
+                                                <td style="color:red; font-weight:bold">{{ data.oxygen }}%</td>
+                                            {% else %}
+                                                <td></td>
+                                            {% endif %}
+
+                                            {% if data.temperature > sensor_data.ideal_temperature_max or data.temperature < sensor_data.ideal_temperature_min %}
+                                                <td style="color:red; font-weight:bold">{{ data.temperature }} °C</td>
+                                            {% else %}
+                                                <td></td>
+                                            {% endif %}
+
+                                            {% if data.ph > sensor_data.ideal_ph_max or data.ph < sensor_data.ideal_ph_min %}
+                                                <td style="color:red; font-weight:bold">{{ data.ph }}</td>
+                                            {% else %}
+                                                <td></td>
+                                            {% endif %}
+
+                                            {% if data.tds > sensor_data.ideal_tds_max or data.tds < sensor_data.ideal_tds_min %}
+                                                <td style="color:red; font-weight:bold">{{ data.tds }} mg/L</td>
+                                            {% else %}
+                                                <td></td>
+                                            {% endif %}
+
+                                            {% if data.turbidity > sensor_data.ideal_turbidity_max or data.turbidity < sensor_data.ideal_turbidity_min %}
+                                                <td style="color:red; font-weight:bold">{{ data.turbidity }}</td>
+                                            {% else %}
+                                                <td></td>
+                                            {% endif %}
+
+                                            {% if request.user|has_group:"User" %}
+                                                <td>
+                                                    <a href="/application/sensor/{{ data.id }}/detail" class="btn btn-default btn-sm" title="Detail">   
+                                                        <i class="fa fa-bar-chart"></i>
+                                                    </a>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <a href="/application/device/{{ data.id }}/configure" class="btn btn-default btn-sm" title="Configure"> 
+                                                        <i class="fa fa-wrench"></i>
+                                                    </a>
+                                                </td>
+                                                <td>                                            
+                                                    <a href="/application/sensor/{{ data.id }}/detail" class="btn btn-default btn-sm" title="Detail">   
+                                                        <i class="fa fa-bar-chart"></i>
+                                                    </a>
+                                                </td>
+                                            {% endif %}  
+                                            <tr style="height:10px">
+                                                {% if request.user|has_group:"User" %}
+                                                    <td onhover colspan="7" style="padding:0px; border-top:0px; margin:0px;">
+                                                        <p style="margin:5px;" align="center">{{ data.created_at }}</p>
+                                                    </td>
+                                                {% else %}
+                                                    <td colspan="8" style="padding:0px; border-top:0px; margin:0px;">
+                                                        <p style="margin:5px;" align="center">{{ data.created_at }}</p>
+                                                    </td>
+                                                {% endif %}
+                                            </tr>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div><!-- table-wrapper -->
+
+                    </div><!-- section-wrapper -->        
+                </div>
+            </div>
+        </div><!-- container -->
+    </div><!-- slim-mainpanel -->
+{% endblock %}

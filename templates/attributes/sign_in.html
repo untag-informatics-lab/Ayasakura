@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <title>Pond IoT</title>
+
+    <!-- Vendor css -->
+    <link href="{% static "template_resource/lib/font-awesome/css/font-awesome.css" %}" rel="stylesheet">
+    <link href="{% static "template_resource/lib/Ionicons/css/ionicons.css"  %}" rel="stylesheet">
+
+    <!-- Slim CSS -->
+    <link rel="stylesheet" href="{% static "template_resource/css/slim.css" %}">
+    <style>
+      .bdbg1{
+        background:linear-gradient(0deg,rgba(0,0,0,0.8),rgba(0,0,0,0.8)),url({% static "template_resource/img/background/kolam.jpg"%});
+        background-size:cover;
+        background-repeat: no-repat;
+      }
+    </style>
+  </head>
+  <body class="bdbg1">
+    <div class="logoc-wrapper">
+      <img src="{% static "template_resource/img/logo/mmp.png" %}" class="img img-responsive" style="max-width:100px;max-height:100px;">
+    </div>
+    <div class="signin-wrapper">
+        <div class="signin-box">
+            <h2 class="slim-logo"><a href="index.html" style="color:#D29E18">Pond IOT<span>.</span></a></h2>            
+            <form action="/" method="POST">
+              {% if messages %}
+                {% for message in messages %}
+                  <p class="btn btn-{{ message.tags }} disable">{{ message }}</p>
+                {% endfor %}
+              {% endif %}
+              {% csrf_token %}
+              <div class="form-group">
+                  <label for="username">Email / Username</label>
+                  <input type="text" class="form-control" name="username" placeholder="Insert your email or username">
+              </div><!-- form-group -->
+              <div class="form-group mg-b-50">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" name="password" placeholder="Enter your password">
+              </div><!-- form-group -->
+
+              <button type="submit" class="btn btn-warning btn-block btn-signin">Sign In</button>
+              {% comment %} <p class="mg-b-0">Don't have an account? <a href="page-signup.html">Sign Up</a></p> {% endcomment %}
+            </form>
+        </div><!-- signin-box -->
+
+    </div><!-- signin-wrapper -->
+
+    <script src="{% static "template_resource/lib/jquery/js/jquery.js" %}"></script>
+    <script src="{% static "template_resource/lib/popper.js/js/popper.js" %}"></script>
+    <script src="{% static "template_resource/lib/bootstrap/js/bootstrap.js" %}"></script>
+
+    <script src="{% static "template_resource/js/slim.js" %}"></script>
+
+  </body>
+</html>

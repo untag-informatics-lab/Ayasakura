@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% block meta %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Meta -->
+    <meta name="description" content="an OpenSource IOT platform">
+    <meta name="author" content="amirrule">
+    {% endblock %}
+
+    
+    <title>
+        {% block title %} {% endblock %}
+    </title>
+
+    {% block css %}
+    <link href="{% static "template_resource/lib/font-awesome/css/font-awesome.css" %}" rel="stylesheet">
+    <link href="{% static "template_resource/lib/Ionicons/css/ionicons.css" %}" rel="stylesheet">
+
+    <!-- Slim CSS -->
+    <link rel="stylesheet" href="{% static "template_resource/css/slim.header-two.css" %}">
+    <link rel="stylesheet" href="{% static "template_resource/css/slim.css" %}">
+    {% endblock %}
+</head>
+
+<body>
+    {% include "partials/_header.html" %}
+
+    {% include "partials/_navbar.html" %}
+
+    {% block content %}
+        Hellow
+    {% endblock %}
+
+    {% include "partials/_footer.html" %}
+
+    {% block javascript %}
+    <script src="{% static "template_resource/lib/d3/js/d3.js" %}"></script>
+    <script src="{% static "template_resource/lib/jquery/js/jquery.js" %}"></script>
+    <script src="{% static "template_resource/lib/popper.js/js/popper.js" %}"></script>
+    <script src="{% static "template_resource/lib/bootstrap/js/bootstrap.js" %}"></script>
+    <script src="{% static "template_resource/lib/jquery.cookie/js/jquery.cookie.js" %}"></script>
+    <script src="{% static "template_resource/js/ResizeSensor.js" %}"></script>
+    <script src="{% static "template_resource/js/slim.js" %}"></script>
+    {% endblock %}
+</body>
+
+</html>

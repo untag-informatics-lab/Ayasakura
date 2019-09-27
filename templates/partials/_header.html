@@ -1,0 +1,32 @@
+<div class="slim-header">
+    <div class="container">
+        <div class="slim-header-left">
+            <h2 class="slim-logo"><a href="/application" style="color:#f7c40c;font-weight:200;letter-spacing:2px">Pond <b style="font-weight:600">IOT</b></a></h2>
+        </div><!-- slim-header-left -->
+        <div class="slim-header-right">                        
+            <div class="dropdown dropdown-c">
+                <a href="#" class="logged-user" data-toggle="dropdown">
+                    {% comment %} <img src="https://www.allsolutionslocksmiths.com.au/wp-content/uploads/2011/07/user.png" alt=""> {% endcomment %}
+                    {% comment %} <span>{{ user.email }}</span> {% endcomment %}
+                    
+                    <i class="fa fa-cog fa-lg"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <nav class="nav">                       
+                        <a href="/account" class="nav-link"><i class="icon ion-gear-b"></i> Account Setting</a>
+                        <a href="/account/notification" class="nav-link"><i class="icon ion ion-android-notifications"></i> Notification Setting</a>
+                        <a href="/account/change-password" class="nav-link"><i class="icon ion-locked"></i> Change Password</a>                        
+                        {% if user.is_superuser or user.is_staff %}
+                            <a href="/admin" class="nav-link"><i class="icon ion-person"></i> Admin Panel</a>
+                        {% endif %}
+                    </nav>
+                </div><!-- dropdown-menu -->
+            </div><!-- dropdown -->
+            <div class="dropdown dropdown-c">
+                <a href="/signout" class="logged-user" onclick="return confirm('logoff now ?')">
+                    <i class="fa fa-power-off fa-lg"></i>
+                </a>
+            </div>
+        </div><!-- header-right -->
+    </div><!-- container -->
+</div><!-- slim-header -->
