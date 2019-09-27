@@ -1,10 +1,10 @@
-# Ara.
+# Ayasakura
 
-Ara an ERP Program for PT. Internet Ini Saja, Surabaya - Indonesia.
+Program Silab.
 
 ## Installation
 
-1. Default environment is `Development`, if you want to change to `Production` change environment setting on `wsgi.py` and `manage.py` to `Ara.settings.production`, or you can add your own environment in `Ara/Ara/settings/`.
+1. Default environment is `Development`, if you want to change to `Production` change environment setting on `wsgi.py` and `manage.py` to `Ayasakura.settings.production`, or you can add your own environment in `Ayasakura/Ayasakura/settings/`.
 
 2. Use the package manager [pip](https://pip.pypa.io/en/stable/) to install Nymphaea dependencies.
 
@@ -29,7 +29,7 @@ python manage.py runserver
 2. For Production (with gunicorn)
 
 ```bash
-gunicorn Ara.wsgi -w <number or workers> --bind <ip_address>:<port_destination> &
+gunicorn Ayasakura.wsgi -w <number or workers> --bind <ip_address>:<port_destination> &
 ```
 
 ## Contributing
@@ -43,8 +43,8 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 ## Changelog
-[Read Changelog](https://github.com/aldamr01/Ara/blob/master/changelog.md)
+[Read Changelog](https://github.com/aldamr01/Ayasakura/blob/master/changelog.md)
 
 ## License
-[GNU GPL V3.0](https://github.com/aldamr01/Ara/license.txt)
+[GNU GPL V3.0](https://github.com/aldamr01/Ayasakura/license.txt)
 
