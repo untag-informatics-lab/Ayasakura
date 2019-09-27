@@ -43,8 +43,8 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 ## Changelog
-[Read Changelog](https://github.com/aldamr01/Ayasakura/blob/master/changelog.md)
+[Read Changelog](https://github.com/untag-informatics-lab/Ayasakura/blob/master/changelog.md)
 
 ## License
-[GNU GPL V3.0](https://github.com/aldamr01/Ayasakura/license.txt)
+[GNU GPL V3.0](https://github.com/untag-informatics-lab/Ayasakura/license.txt)
 
