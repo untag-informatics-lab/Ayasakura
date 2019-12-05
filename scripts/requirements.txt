@@ -8,7 +8,7 @@ chardet==3.0.4
 cssselect2==0.2.2
 defusedxml==0.6.0
 diff-match-patch==20181111
-Django==2.2.5
+Django==2.2.8
 django-adminlte==1.2
 django-adminlte2==0.4.1
 django-allauth==0.40.0
